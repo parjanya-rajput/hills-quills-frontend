@@ -1,14 +1,14 @@
 import { z, ZodTypeAny } from "zod";
 
 export const LoginResponseSchema = z.object({
-    token: z.string(),
-    refresh_token: z.string(),
+  token: z.string(),
+  refresh_token: z.string(),
 });
 
 export type LoginResponse = z.infer<typeof LoginResponseSchema>;
 
 export const UploadImageResponseSchema = z.object({
-    url: z.url(),
+  url: z.url(),
 });
 
 export type UploadImageResponse = z.infer<typeof UploadImageResponseSchema>;
@@ -22,17 +22,21 @@ export const PREVIEW_ARTICLE_IMAGE: ImageFile = {
   previewUrl: '/images/placeholder.png',
 }
 
+export const PREVIEW_AUTHOR_IMAGE: ImageFile = {
+  previewUrl: '/images/placeholder.png',
+}
+
 export const PREVIEW_STORY_IMAGE: ImageFile = {
   previewUrl: '/images/story_placeholder.png',
 }
 
 export enum Status {
-    Pending  = "pending",
-    Approved = "approved",
-    Rejected = "rejected",
-    Draft    = "draft",
-  }
-  
+  Pending = "pending",
+  Approved = "approved",
+  Rejected = "rejected",
+  Draft = "draft",
+}
+
 export enum Category {
   Politics = "politics",
   Defence = "defence",
@@ -76,4 +80,9 @@ export function withPagination<T extends ZodTypeAny>(schema: T) {
       nextCursor: z.number(),
     }),
   });
+}
+
+export enum StatusAuthor {
+  Active = "1",
+  Deleted = "0",
 }
