@@ -21,7 +21,7 @@ export default function AuthorCreateForm() {
 
                 <div className="flex items-left  gap-3">
                     <Button onClick={handlePublish} disabled={isCreating}>
-                        {isCreating ? 'Publishing...' : 'Publish'}
+                        {isCreating ? 'Creating Author...' : 'Create Author'}
                     </Button>
                     <Button
                         type="button"
