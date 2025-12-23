@@ -4,6 +4,8 @@ import { Admin } from "@/features/auth/admin";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllAuthors } from "@/features/auth/services/author";
 import { Story } from "@/features/web-story/types";
+import { Author } from "../author";
+import { fetchAuthor } from "@/features/auth/services/author";
 
 export function useAdmin() {
   const { data: admin, error, isLoading } = useQuery<Admin>({
@@ -12,6 +14,15 @@ export function useAdmin() {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
   return { admin, error, isLoading };
+}
+
+export function useAuthor() {
+  const {data: author, error, isLoading} = useQuery<Author> ({
+    queryKey: ["author"] as const,
+    queryFn: fetchAuthor,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+  return { author, error, isLoading };
 }
 
 export function useAuthors() {

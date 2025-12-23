@@ -26,17 +26,16 @@ import {
   Users, 
   BarChart3, 
 } from "lucide-react"
-import { useAdmin } from "@/features/auth/hooks"
+import { useAuthor } from "@/features/auth/hooks"
 
 const menuItems = [
-  { title: "Articles", icon: FileText, href: "/admin/articles" },
-  { title: "Web Stories", icon: Video, href: "/admin/stories" },
-  { title: "Authors", icon: Users, href: "/admin/authors" },
-  { title: "Analytics", icon: BarChart3, href: "/admin/analytics" },
+  { title: "Articles", icon: FileText, href: "/author/articles" },
+  { title: "Web Stories", icon: Video, href: "/author/stories" },
+  { title: "Analytics", icon: BarChart3, href: "/author/analytics" },
 ]
 
 function AppSidebar() {
-  const { admin } = useAdmin()
+  const { author } = useAuthor()
   return (
     <Sidebar>
       <SidebarHeader>
@@ -44,7 +43,7 @@ function AppSidebar() {
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <BarChart3 className="h-4 w-4" />
           </div>
-          <span className="font-semibold">Admin Panel</span>
+          <span className="font-semibold">Author Panel</span>
         </div>
       </SidebarHeader>
 
@@ -78,16 +77,16 @@ function AppSidebar() {
                     <AvatarImage src={"/placeholder.svg"} />
                     <AvatarFallback>
                       <UserCircle className="h-4 w-4" />
-                      {admin?.email?.charAt(0).toUpperCase() || "A"}
+                      {author?.email?.charAt(0).toUpperCase() || "A"}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="truncate">{admin?.email || "Admin"}</span>
+                  <span className="truncate">{author?.email || "Author"}</span>
                   <ChevronUp className="ml-auto h-4 w-4" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
                 <DropdownMenuItem asChild className="text-red-600">
-                  <a href="/login/admin">
+                  <a href="/login/author">
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign out
                   </a>
@@ -112,7 +111,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <div className="flex-1">
-            <h1 className="text-lg font-semibold">Admin Dashboard</h1>
+            <h1 className="text-lg font-semibold">Author Dashboard</h1>
           </div>
         </header>
         <main className="flex-1 space-y-4 p-4 md:p-6">{children}</main>

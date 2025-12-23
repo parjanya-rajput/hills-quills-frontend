@@ -42,6 +42,16 @@ export async function updateArticleStatus(
     return ArticleSchema.parse(result.data);
 }
 
+// Convert draft to pending (author only)
+export async function updateArticleStatusAuthor(
+    articleId: number, 
+    status: Status, 
+): Promise<Article> {
+    const payload: any = { status };
+    const result = await apiClient.patch<Article>(`/articles/${articleId}/author/publish`, payload);
+    return ArticleSchema.parse(result.data);
+}
+
 // This will fetch even the articles which are not approved
 export async function fetchArticleByIdForView(id: number): Promise<ArticleViewWithAuthor> {
     const result = await apiClient.get<ArticleViewWithAuthor>(`/articles/view/${id}`);
@@ -77,6 +87,15 @@ export async function deleteArticle(id: number): Promise<Article> {
 export async function fetchTagsForArticle(id: number): Promise<string[]> {
     const result = await apiClient.get<string[]>(`/articles/tags/${id}`);
     return result.data;
+}
+
+// ***********************************
+// ************Author Services********
+// ***********************************
+
+export async function fetchArticlesByAuthor(authorId: number, cursor: number, limit: number): Promise<Article[]> {
+    const result = await apiClient.get<Article[]>(`/articles/author/${authorId}?cursor=${cursor}&limit=${limit}`);
+    return result.data.map((item: any) => ArticleSchema.parse(item));
 }
 
 

@@ -12,6 +12,7 @@ import {
   deleteSlidesForStory,
   createSlidesForStory,
   updateSlide,
+  fetchWebStoriesByAuthor,
 } from '@/features/web-story/services';
 import React, { useCallback, useState } from 'react';
 import { SlideForm, StoryFormState } from '@/features/web-story/component/story-form';
@@ -109,10 +110,20 @@ export function useCreateStory() {
   return { createStory: storyCreate, isCreating };
 }
 
+// admin access only
 export function useStories() {
   const { data, error, isLoading } = useQuery({
     queryKey: ['allStory'],
     queryFn: () => fetchAllStories(10000, 10000),
+  });
+  return { stories: data || [], error, isLoading };
+}
+
+// story by author for author dashboard
+export function useStoriesByAuthor(authorId: number) {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['allStory'],
+    queryFn: () => fetchWebStoriesByAuthor(authorId, 10000, 10000),
   });
   return { stories: data || [], error, isLoading };
 }
@@ -136,8 +147,6 @@ export function useUpdateStoryStatus() {
         if (!oldData) return oldData;
         return oldData.map((story) => (story.id === data.id ? data : story));
       });
-
-      toast.success('Story status updated successfully');
     },
     onError: (error: any) => {
       console.error(error);

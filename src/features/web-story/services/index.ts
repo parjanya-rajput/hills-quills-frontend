@@ -12,6 +12,12 @@ export async function fetchAllStories(cursor: number, limit: number): Promise<St
     return result.data.map((item: any) => StorySchema.parse(item));
 }
 
+// Author function to fetch all stories by author
+export async function fetchWebStoriesByAuthor(authorId: number, cursor: number, limit: number): Promise<Story[]> {
+    const result = await apiClient.get<Story[]>(`/web_stories/author/${authorId}?cursor=${cursor}&limit=${limit}`);
+    return result.data.map((item: any) => StorySchema.parse(item));
+}
+
 export type SlideRequest = {
     slide_order: number;
     image_url: string;

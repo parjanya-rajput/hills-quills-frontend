@@ -9,8 +9,8 @@ export const useAuthorLogin = () => {
 
     const handleAuthor = async (email: string, password: string) => {
         try {
-            await login({ email, password, userType: UserRole.ADMIN })
-            router.push("/author/dashboard")
+            await login({ email, password, userType: UserRole.AUTHOR })
+            router.push("/author/articles")
         } catch (err) {
             toast.error("Author login failed: " + err)
         }

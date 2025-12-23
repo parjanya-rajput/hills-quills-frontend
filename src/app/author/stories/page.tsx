@@ -3,21 +3,29 @@
 import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Plus, Search } from "lucide-react"
-import { StoriesTable } from "../../../features/web-story/component/stories-table"
-import { useStories } from "@/features/web-story/hooks"
+import { useStoriesByAuthor } from "@/features/web-story/hooks"
 import { useRouter } from "next/navigation"
 import { useStoryFilterHook, } from "@/features/web-story/hooks/useStoryFilterHook"
+import { useAuthorId } from "@/features/author/hooks/useAuthorId"
 import FilterStories from "@/components/molecules/filter-stories"
+import { StoriesTableAuthor } from "@/features/web-story/component/stories-table-author"
 
 
 export default function StoriesPage() {
   const router = useRouter()
-  const { stories, error, isLoading } = useStories()
+  const authorId = useAuthorId()
+
+  if (authorId === null) {
+    // redirect to login page
+    router.replace("/login/author")
+  }
+
+  const { stories, error, isLoading } = useStoriesByAuthor(authorId!)
   const { filteredStories, searchTerm, statusFilter, categoryFilter, regionFilter, setSearchTerm, setStatusFilter, setCategoryFilter, setRegionFilter } = useStoryFilterHook(stories)
 
 
   const handleCreateNew = () => {
-    router.push("/admin/stories/create")
+    router.push("/author/stories/create")
   }
 
 
@@ -50,7 +58,7 @@ export default function StoriesPage() {
         />
 
         {/* Stories Table */}
-        <StoriesTable
+        <StoriesTableAuthor
           stories={filteredStories}
           isLoading={isLoading}
         />

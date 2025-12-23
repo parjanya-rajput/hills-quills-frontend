@@ -6,6 +6,8 @@ import {
   fetchTrendingTags,
   fetchArticlesByCategory,
   fetchArticlesByTag,
+  fetchArticlesByAuthor,
+  updateArticleStatusAuthor,
 } from '@/features/article/services';
 import { apiClient } from '@/lib/api';
 import {
@@ -162,6 +164,7 @@ export function useCreateArticle() {
   return [articleCreate, isCreating] as const;
 }
 
+// admin side hook to fetch all articles
 export function useArticles() {
   const {
     data: articles,
@@ -170,6 +173,19 @@ export function useArticles() {
   } = useQuery({
     queryKey: ['allArticle'],
     queryFn: () => fetchAllArticles(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER),
+  });
+  return { articles, error, isLoading };
+}
+
+// Hook to fetch articles by author ID
+export function useArticlesByAuthor(authorId: number) {
+  const {
+    data: articles,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ['allArticle'],
+    queryFn: () => fetchArticlesByAuthor(authorId, Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER),
   });
   return { articles, error, isLoading };
 }
@@ -249,6 +265,32 @@ export function useUpdateArticleStatus() {
       status: Status;
       rejectionReason?: string;
     }) => updateArticleStatus(id, status, rejectionReason),
+    onSuccess: (newArticle: Article) => {
+      queryClient.setQueryData(['allArticle'], (oldData: Article[]) => {
+        if (!oldData) return [];
+        return oldData.map((article) => {
+          if (article.id === newArticle.id) {
+            return newArticle;
+          }
+          return article;
+        });
+      });
+    },
+  });
+
+  return { updateArticleStatus: mutateAsync, isLoading: isPending };
+}
+
+export function useUpdateArticleStatusAuthor() {
+  const queryClient = useQueryClient();
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: ({
+      id,
+      status,
+    }: {
+      id: number;
+      status: Status;
+    }) => updateArticleStatusAuthor(id, status),
     onSuccess: (newArticle: Article) => {
       queryClient.setQueryData(['allArticle'], (oldData: Article[]) => {
         if (!oldData) return [];

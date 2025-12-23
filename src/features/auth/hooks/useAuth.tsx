@@ -196,3 +196,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 // Custom hook to use the auth context
 export const useAuth = () => useContext(AuthContext);
+
+// Re-export user classes and type guards
+export { AdminUser, AuthorUser, UnknownUser, User };
+
+export function isAuthorUser(user: User): user is AuthorUser {
+  return user.role === UserRole.AUTHOR;
+}
