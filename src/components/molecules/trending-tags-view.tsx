@@ -1,7 +1,6 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
 import TagBadge from "./tag-badge"
 
 export function TrendingTagsView({ trendingTags, handleTagClick }: { trendingTags?: string[], handleTagClick: (tag: string) => void }) {
